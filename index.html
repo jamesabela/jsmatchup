@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mix and Match Quiz</title>
+  <style>
+    #container {
+      display: flex;
+      justify-content: space-around;
+    }
+    #column1 p, #column2 p {
+      border: 1px solid black;
+      padding: 5px;
+      width: 150px;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<h2>Mix and Match Quiz</h2>
+<div id="container">
+  <div id="column1">
+    <p draggable="true" id="item1">print("1", 8 + 2)</p>
+    <p draggable="true" id="item2">print("2", 8 - 2)</p>
+    <p draggable="true" id="item3">print("3", 8 * 2)</p>
+    <p draggable="true" id="item4">print("4", 10 % 3)</p>
+    <p draggable="true" id="item5">print("5", 10 / 4)</p>
+    <p draggable="true" id="item6">print("6", 10 // 4)</p>
+    <p draggable="true" id="item7">print("7"*2)</p>
+  </div>
+  <div id="column2">
+    <p id="desc1">addition</p>
+    <p id="desc2">subtraction</p>
+    <p id="desc3">multiplication</p>
+    <p id="desc4">modulus (remainder)</p>
+    <p id="desc5">division</p>
+    <p id="desc6">floor division</p>
+    <p id="desc7">multiply text</p>
+  </div>
+</div>
+<button onclick="checkAnswers()">Check Answers</button>
+
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    let dragged;
+
+    document.querySelectorAll('#column1 p').forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        dragged = item;
+      });
+
+      item.addEventListener('dragend', (e) => {
+        e.preventDefault();
+      });
+    });
+
+    document.querySelectorAll('#column2 p').forEach(desc => {
+      desc.addEventListener('dragover', (e) => {
+        e.preventDefault();
+      });
+
+      desc.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (!desc.querySelector('p')) {
+          desc.appendChild(dragged);
+        }
+      });
+    });
+  });
+
+  function checkAnswers() {
+    const answers = {
+      'item1': 'desc1',
+      'item2': 'desc2',
+      'item3': 'desc3',
+      'item4': 'desc4',
+      'item5': 'desc5',
+      'item6': 'desc6',
+      'item7': 'desc7'
+    };
+
+    let score = 0;
+    for (let key in answers) {
+      let item = document.getElementById(key);
+      if (item.parentNode.id === answers[key]) {
+        score++;
+      }
+    }
+
+    alert(`Your score: ${score}/${Object.keys(answers).length}`);
+  }
+</script>
+</body>
+</html>
